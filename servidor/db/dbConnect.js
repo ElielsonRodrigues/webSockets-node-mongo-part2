@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 const cliente = new MongoClient(
-  "mongodb://root:123456@localhost:1000/aluraSocketio?authSource=admin"
+  "mongodb://root:123456@localhost:27017/aluraSocketio?authSource=admin"
 );
 
 let documentosColecao, usuariosColecao;
