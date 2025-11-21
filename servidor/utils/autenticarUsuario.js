@@ -8,7 +8,7 @@ function autenticarUsuario(senha, usuario) {
     // realiza a conversão do hash da senha para hexadecimal
     const hashReal = Buffer.from(usuario.hashSenha, "hex");
 
-    // realiza a comparação de dois hash, o que foi digitado e o que esta no banco
+    // realiza a comparação do Buffer dos dois hash, o que foi digitado e o que esta no banco
     const autenticado = timingSafeEqual(hashTeste, hashReal);
 
     // retorna um boolean

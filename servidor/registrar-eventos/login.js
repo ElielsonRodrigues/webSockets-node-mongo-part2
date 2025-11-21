@@ -15,8 +15,7 @@ function registrarEventosLogin(socket, io) {
             if (autenticado) {
                 // chamando minha função utils que gera o token Jwt
                 const tokenJwt = gerarJwt({ user: nome }); // gera payload do jwt somente com nome do usuario
-                console.log(tokenJwt);
-                socket.emit("autenticado_sucesso");
+                socket.emit("autenticado_sucesso", tokenJwt);
             } else {
                 socket.emit("autenticacao_falha");
             }
