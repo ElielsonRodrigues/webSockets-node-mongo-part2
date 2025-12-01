@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 function gerarJwt(payload) {
-
+    //console.log(process.env.SECRET_JWT)
     const tokenJwt = jwt.sign(payload, process.env.SECRET_JWT, {
         expiresIn: "1h" // pode ser passado da seguinte: 1h ou 2 days
     });

@@ -2,8 +2,6 @@ const socket = io();
 
 import { definirCookie } from "../utils/cookie.js"
 
-
-
 function emitirAutenticarUsuario(dados) {
     socket.emit("autenticar_usuario", dados);
 }
