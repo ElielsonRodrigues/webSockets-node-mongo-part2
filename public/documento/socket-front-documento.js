@@ -1,5 +1,10 @@
 import { obterCookie } from "../utils/cookie.js";
-import { alertarERedirecionar, atualizaTextoEditor } from "./documento.js";
+import {
+  alertarERedirecionar,
+  atualizarInterfaceUsuarios,
+  atualizaTextoEditor,
+  tratarAutorizacaoSucesso
+} from "./documento.js";
 
 const socket = io("/usuarios", {
   auth: {
@@ -7,16 +12,21 @@ const socket = io("/usuarios", {
   }
 });
 
+socket.on("autorizar_sucesso", tratarAutorizacaoSucesso);
+
 socket.on("connect_error", (erro) => {
   alert(erro);
   window.location.href = "/login/index.html"
 });
 
-function selecionarDocumento(nome) {
-  socket.emit("selecionar_documento", nome, (texto) => {
+function selecionarDocumento(dados) {
+  socket.emit("selecionar_documento", dados, (texto) => {
     atualizaTextoEditor(texto);
   });
 }
+
+socket.on("usuarios_no_documento", atualizarInterfaceUsuarios);
+
 
 function emitirTextoEditor(dados) {
   socket.emit("texto_editor", dados);

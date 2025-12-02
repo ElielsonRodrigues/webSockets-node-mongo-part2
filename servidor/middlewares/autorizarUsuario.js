@@ -6,12 +6,15 @@ function autorizarUsuario(socket, next) {
     //console.log(tokenJwt);
     try {
         //console.log(process.env.SECRET_JWT)
-        jwt.verify(tokenJwt, process.env.SECRET_JWT);
+        const payLoadToken = jwt.verify(tokenJwt, process.env.SECRET_JWT);
+
+        socket.emit("autorizar_sucesso", payLoadToken);
+
         next();
     } catch (erro) {
         next(erro);
     }
-    
+
 }
 
 export default autorizarUsuario;

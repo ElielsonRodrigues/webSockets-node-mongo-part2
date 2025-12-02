@@ -3,18 +3,32 @@ import {
     encontrarDocumento,
     excluirDocumento,
 } from "../db/documentosDb.js";
+import { adicionarConexao, obterUsuariosDocumento } from "../utils/conexoesDocumento.js";
 
 function registrarEventosDocumento(socket, io) {
 
-    socket.on("selecionar_documento", async (nomeDocumento, devolverTexto) => {
-        socket.join(nomeDocumento);
+    socket.on(
+        "selecionar_documento",
+        async ({ nomeDocumento, nomeUsuario }, devolverTexto) => {
+            //console.log(nomeUsuario);
+            const documento = await encontrarDocumento(nomeDocumento);
 
-        const documento = await encontrarDocumento(nomeDocumento);
+            if (documento) {
+                socket.join(nomeDocumento);
+                adicionarConexao({ nomeDocumento, nomeUsuario });
 
-        if (documento) {
-            devolverTexto(documento.texto);
-        }
-    });
+                const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+
+                // não usar 'socket.to' motivo e que o 'socket.to' irar disparar o evento para todos
+                // exceto o documento desejado e não é isso que queremos. queros somente o socket que esta 
+                // conectado a este documentos
+                io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
+
+                //console.log(usuariosNoDocumento);
+
+                devolverTexto(documento.texto);
+            }
+        });
 
     socket.on("texto_editor", async ({ texto, nomeDocumento }) => {
         const atualizacao = await atualizaDocumento(nomeDocumento, texto);
